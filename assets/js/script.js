@@ -1,7 +1,13 @@
 var questionHolder = document.getElementById('questionholder');
 var score = 0;
 var highscore = 0;
-var secondsLeft = 30;
+var secondsLeft = 5;  //change back to 30
+var timerElement = document.getElementById('timer');
+var startButton = document.getElementById('startbutton');
+var currentQuestion = document.getElementById('query');
+var shownAnswers = document.querySelectorAll('.answer');
+
+questionHolder.style.display = "none";
 
 var question1 = {
     query: 'Which HTML element do we put the JavaScript?',
@@ -25,25 +31,31 @@ var question4 = {
 };
 
 
-// function startTimer() {
-//     var timerInterval = setInterval(function() {
-//         secondsLeft--;
-//         timerElement.textContent = secondsLeft + " seconds left";
-//         if(secondsLeft === 0) {
-//             clearInterval(timerInterval);
-//             timerElement.textContent = "Times up!";
-//             startButton.style.display = "block";
-//             secondsLeft = 30;
-//             score = 0;
-//         }
-//     }, 1000);
-// }
+function startTimer() {
+    showQuestion(question1);
+    currentQuestion.style.display = "block";
+    questionHolder.style.display = "block";
+    startButton.style.display = "none";
+    var timerInterval = setInterval(function() {
+        secondsLeft--;
+        timerElement.textContent = secondsLeft + " seconds left";
+        if(secondsLeft === 0) {
+            clearInterval(timerInterval);
+            startButton.textContent = "Restart Quiz";
+            timerElement.textContent = "Times up!";
+            startButton.style.display = "block";
+            questionHolder.style.display = "none";
+            currentQuestion.style.display = "none";
+            secondsLeft = 3; //change back to 30
+            score = 0;
+        }
+    }, 1000);
+}
 
 
 //selects element and displays question passed to it
 function showQuestion(newQuestion) {
-    var currentQuestion = document.getElementById('query');
-    var shownAnswers = document.querySelectorAll('.answer');
+
     currentQuestion.textContent = newQuestion.query;
 
     //iterates thru each answer to populate it with the answers in the given question obj
@@ -52,4 +64,4 @@ function showQuestion(newQuestion) {
     })
 }
 
-showQuestion(question4);
+startButton.addEventListener("click", startTimer);
